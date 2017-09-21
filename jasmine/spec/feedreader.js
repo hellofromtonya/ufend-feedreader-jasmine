@@ -122,7 +122,7 @@ $(function() {
      * the use of Jasmine's beforeEach and asynchronous done() function.
      */
     it('should have at least one feed entry after loadFeed() runs', function(done) {
-      var entryFeeds = $('.entry-link');
+      var entryFeeds = $('.feed').find('.entry');
 
       // test that there are entry feed elements
       expect(entryFeeds).toBeDefined();
@@ -140,19 +140,21 @@ $(function() {
   describe('New Feed Selection', function() {
 
     var container = $('.feed'),
-        title = $('.header-title'),
         preContent = {},
         feedIndex = 2;
 
     beforeEach(function(done) {
-      // Grab what's currently in the DOM.
-      preContent = {
-        title: title.text(),
-        entryFeeds: container.children('.entry-link')
-      };
 
-      loadFeed(feedIndex, function() {
-        done();
+      loadFeed(0, function(){
+        // Grab what's currently in the DOM.
+        preContent = {
+          title: $('.header-title').text(),
+          entryFeeds: container.children('.entry-link')
+        };
+
+        loadFeed(feedIndex, function() {
+          done();
+        });
       });
     });
 
@@ -161,7 +163,8 @@ $(function() {
      * Remember, loadFeed() is asynchronous.
      */
     it('should load new content asynchronously when new feed is loaded', function(done) {
-      var entryFeeds = container.children('.entry-link');
+      var title = $('.header-title'),
+          entryFeeds = container.children('.entry-link');
 
       // test that there are entry feed elements
       expect(entryFeeds).toBeDefined();
